@@ -1,0 +1,17 @@
+<head>
+  <title>bar-graph</title>
+</head>
+
+<body>
+  {{> hello}}
+</body>
+
+<template name="hello">
+  <h1>Hello World!</h1>
+  <div>
+    <span class="bar" style="width: {{width}}px"></span>
+  </div>
+
+  <input type="button" class="inc" value="Increment" />
+  <input type="button" class="reset" value="Reset" />
+</template>
