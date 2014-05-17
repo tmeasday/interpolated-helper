@@ -14,17 +14,27 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
     var tickSize = time / N_TICKS;
     
     var i = 0;
-    self.running = true;
     self.set(0);
-    var interval = Meteor.setInterval(function() {
+    self.running = true;
+    self._interval = Meteor.setInterval(function() {
       i += 1;
-      if (i > N_TICKS) {
-        self.running = false;
-        Meteor.clearInterval(interval);
-      } else {
+      if (i <= N_TICKS)
         self.set(self.easingFn(i / N_TICKS));
-      }
-      
+      else 
+        self.stop();
     }, tickSize);
+  },
+  
+  stop: function() {
+    if (this.running) {
+      this.set(1);
+      this.running = false;
+      Meteor.clearInterval(this._interval);
+    }
+  },
+  
+  restart: function() {
+    this.stop();
+    this.start();
   }
 });

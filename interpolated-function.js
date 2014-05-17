@@ -21,13 +21,21 @@ InterpolatedFunction.prototype.call = function() {
   if (_.isUndefined(this._lastValue))
     this._lastValue = value
   
-  // the value didn't change
-  if (this._lastValue === value)
-    return value;
-  
-  // oh, we just changed
-  if (! this.easer.running)
+  // hold on, we need to go to a value that we aren't currently interpolating to
+  if (! _.isUndefined(this._nextValue) && value !== this._nextValue) {
+    this._lastValue = this._currentValue;
+    this.easer.stop();
+  }
+
+  // we need to start
+  if (! this.easer.running) {
+    // the value didn't change, don't start
+    if (this._lastValue === value)
+      return value;
+    
+    this._nextValue = value;
     this.easer.start();
+  }
   
   var f = this.easer.get();
   
@@ -35,5 +43,5 @@ InterpolatedFunction.prototype.call = function() {
   if (f === 1)
     this._lastValue = value;
   
-  return this.interpolator(f, this._lastValue, value)
+  return this._currentValue = this.interpolator(f, this._lastValue, value);
 }
