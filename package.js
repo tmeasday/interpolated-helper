@@ -9,9 +9,11 @@ Package.on_use(function (api, where) {
     'reactivevar.js',
     'reactive-easer.js',
     'interpolated-function.js',
+    'helpers.js'
   ], ['client', 'server']);
   
   api.export(['ReactiveEaser', 'InterpolatedFunction']);
+  api.export(['animate']);
 });
 
 Package.on_test(function (api) {

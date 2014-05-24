@@ -11,18 +11,15 @@ InterpolatedFunction = function(fn, easing, interpolator) {
 
 InterpolatedFunction.prototype = new Function();
 
-InterpolatedFunction.prototype.call = function() {
-  var value = this.fn();
-  
-  // XXX: should probably store the value we are moving to
-  // and if we aren't there when f changes, reset...
+InterpolatedFunction.prototype.call = function(self, arguments) {
+  var value = this.fn.call(self, arguments);
   
   // not sense in interpolating from nothing
   if (_.isUndefined(this._lastValue))
     this._lastValue = value
   
   // hold on, we need to go to a value that we aren't currently interpolating to
-  if (! _.isUndefined(this._nextValue) && value !== this._nextValue) {
+  if (! _.isUndefined(this._nextValue) && ! EJSON.equals(value, this._nextValue)) {
     this._lastValue = this._currentValue;
     this.easer.stop();
   }
@@ -30,7 +27,7 @@ InterpolatedFunction.prototype.call = function() {
   // we need to start
   if (! this.easer.running) {
     // the value didn't change, don't start
-    if (this._lastValue === value)
+    if (EJSON.equals(this._lastValue, value))
       return value;
     
     this._nextValue = value;
