@@ -1,6 +1,6 @@
-// XXX: what to do if there is no key?
+// XXX: what to do if there is no key? -- right now there can just be one interpolator
 var keyForAnimation = function(doc) {
-  return doc._id;
+  return doc._id || 'ID';
 }
 
 animate = function(fn, easing, interpolator) {

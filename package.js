@@ -3,7 +3,7 @@ Package.describe({
 });
 
 Package.on_use(function (api, where) {
-  api.use(['deps', 'underscore']);
+  api.use(['deps', 'underscore', 'd3']);
   
   api.add_files([
     'reactivevar.js',

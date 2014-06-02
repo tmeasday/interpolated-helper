@@ -4,9 +4,7 @@ InterpolatedFunction = function(fn, easing, interpolator) {
   this.fn = fn;
   this.easing = easing || _.identity;
   this.easer = new ReactiveEaser(easing);
-  this.interpolator = interpolator || function(f, x, y) { 
-    return x + (y - x) * f; 
-  };
+  this.interpolator = interpolator || d3.interpolate;
 }
 
 InterpolatedFunction.prototype = new Function();
@@ -31,14 +29,15 @@ InterpolatedFunction.prototype.call = function(self, arguments) {
       return value;
     
     this._nextValue = value;
+    this._currentInterpolator = this.interpolator(this._lastValue, value);
     this.easer.start();
   }
   
-  var f = this.easer.get();
+  var t = this.easer.get();
   
   // we just finished!
-  if (f === 1)
+  if (t === 1)
     this._lastValue = value;
   
-  return this._currentValue = this.interpolator(f, this._lastValue, value);
+  return this._currentValue = this._currentInterpolator(t);
 }

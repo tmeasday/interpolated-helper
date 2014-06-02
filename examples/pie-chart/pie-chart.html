@@ -1,0 +1,21 @@
+<head>
+  <title>pie-chart</title>
+</head>
+
+<body>
+  {{> pie}}
+</body>
+
+<template name="pie">
+  <svg width="100" height="100">
+    <g transform="translate(50,50)">
+      {{#with fractions}}
+        {{#each pieces}}
+          <path d="{{path}}" fill="{{color}}"/>
+        {{/each}}
+      {{/with}}
+    </g>
+  </svg>
+  
+  <button>Click ME!</button>
+</template>
