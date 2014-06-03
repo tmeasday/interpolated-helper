@@ -1,15 +1,16 @@
 // should this be a parameter?
 var N_TICKS = 100;
-ReactiveEaser = function(easingFn) {
+ReactiveEaser = function(easingFn, defaultTime) {
   ReactiveVar.call(this, 1);
-  this.easingFn = easingFn || _.identity;
+  this.easingFn = easingFn || d3.ease('cubic-in-out');
+  this.defaultTime = defaultTime || 1000;
   this.running = false
 }
 
 ReactiveEaser.prototype = _.extend(new ReactiveVar, {
   start: function(time) {
     var self = this;
-    time = time || 1000;
+    time = time || self.defaultTime;
     
     var tickSize = time / N_TICKS;
     

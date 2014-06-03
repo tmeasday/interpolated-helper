@@ -1,10 +1,10 @@
 // XXX: not sure if this is the correct pattern at all but let's go
 
-InterpolatedFunction = function(fn, easing, interpolator) {
+InterpolatedFunction = function(fn, options) {
+  options = options || {};
   this.fn = fn;
-  this.easing = easing || _.identity;
-  this.easer = new ReactiveEaser(easing);
-  this.interpolator = interpolator || d3.interpolate;
+  this.easer = new ReactiveEaser(options.easing, options.time);
+  this.interpolator = options.interpolator || d3.interpolate;
 }
 
 InterpolatedFunction.prototype = new Function();

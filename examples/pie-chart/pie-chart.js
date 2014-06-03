@@ -13,8 +13,10 @@ if (Meteor.isClient) {
   Session.setDefault('fractions', generateFractions());
 
   Template.pie.helpers({
-    fractions: animate(function() { return Session.get('fractions'); },
-     d3.ease('cubic-in-out'), d3.interpolateArray),
+    fractions: animate(function() { return Session.get('fractions'); }, {
+      interpolator: d3.interpolateArray,
+      time: 400
+    }),
     
     pieces: function() {
       return _.map(layout(this), function(o, index) {

@@ -1,8 +1,6 @@
 if (Meteor.isClient) {
   Session.setDefault('value', 100);
-  var value = function() {
-    return Session.get('value');
-  }
+  var value = function() { return Session.get('value'); }
 
   Template.hello.width = animate(value);
 
@@ -14,11 +12,5 @@ if (Meteor.isClient) {
     'click .reset': function() {
       Session.set('value', 100);
     }
-  });
-}
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
   });
 }
