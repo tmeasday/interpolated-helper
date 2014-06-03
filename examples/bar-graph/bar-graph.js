@@ -1,15 +1,10 @@
-
 if (Meteor.isClient) {
   Session.setDefault('value', 100);
   var value = function() {
     return Session.get('value');
   }
-  window.interpolatedFn = new InterpolatedFunction(value);
 
-
-  Template.hello.width = function () {
-    return interpolatedFn.call();
-  };
+  Template.hello.width = animate(value);
 
   Template.hello.events({
     'click .inc': function () {
