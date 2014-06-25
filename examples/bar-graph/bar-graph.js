@@ -1,6 +1,9 @@
 if (Meteor.isClient) {
   Session.setDefault('value', 100);
-  var value = function() { return Session.get('value'); }
+  var value = function() {
+    console.log('calculating value');
+    return Session.get('value');
+  }
 
   Template.hello.width = animate(value);
 
