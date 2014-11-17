@@ -1,11 +1,12 @@
 Package.describe({
-  summary: "REPLACEME - What does this package (or the original one you're wrapping) do?"
+  name: 'percolate:interpolated-helper',
+  summary: "Provides a reactive interpolate framework"
 });
 
-Package.on_use(function (api, where) {
+Package.onUse(function (api, where) {
   api.use(['deps', 'underscore', 'd3']);
   
-  api.add_files([
+  api.addFiles([
     'reactivevar.js',
     'reactive-easer.js',
     'interpolated-function.js',
@@ -16,8 +17,8 @@ Package.on_use(function (api, where) {
   api.export(['animate']);
 });
 
-Package.on_test(function (api) {
+Package.onTest(function (api) {
   api.use('interpolated-helper');
 
-  api.add_files('interpolated-helper_tests.js', ['client', 'server']);
+  api.addFiles('interpolated-helper_tests.js', ['client', 'server']);
 });
