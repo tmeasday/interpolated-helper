@@ -6,7 +6,12 @@ ReactiveEaser = function(easingFn, defaultTime) {
 }
 
 ReactiveEaser.prototype = _.extend(new ReactiveVar, {
-  start: function(time) {
+  start: function(time, cb) {
+    if (_.isFunction(time)) {
+      cb = time;
+      time = false;
+    }
+    
     if (this.running)
       throw new Meteor.Error("Can't start an easer that's already running!");
     
@@ -26,6 +31,8 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
         // give listeners a chance to read the 1 value before stopping
         Deps.afterFlush(function() {
           self.stop();
+          if (cb)
+            cb();
         });
       }
     }
@@ -48,5 +55,13 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
   restart: function() {
     this.stop();
     this.start();
+  },
+  
+  loop: function() {
+    var self = this;
+    var go = function() {
+      self.start(go);
+    }
+    go();
   }
 });
