@@ -1,5 +1,11 @@
 ReactiveEaser = function(easingFn, defaultTime) {
   ReactiveVar.call(this, 0);
+  
+  if (! _.isFunction(easingFn)) {
+    defaultTime = easingFn;
+    easingFn = null;
+  }
+  
   this.easingFn = easingFn || d3.ease('cubic-in-out');
   this.defaultTime = defaultTime || 1000;
   this.running = false
