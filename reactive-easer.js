@@ -1,5 +1,5 @@
 ReactiveEaser = function(easingFn, defaultTime) {
-  ReactiveVar.call(this, 1);
+  ReactiveVar.call(this, 0);
   this.easingFn = easingFn || d3.ease('cubic-in-out');
   this.defaultTime = defaultTime || 1000;
   this.running = false
