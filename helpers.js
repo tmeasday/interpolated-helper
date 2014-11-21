@@ -14,3 +14,10 @@ animate = function(fn, easing, interpolator) {
     return fn.interpolators[key].call(this, arguments);
   }
 }
+
+interpolate = function(interpolator, easer) {
+  return function() {
+    return interpolator(easer.get());
+  }
+}
+

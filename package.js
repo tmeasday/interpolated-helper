@@ -14,7 +14,8 @@ Package.onUse(function (api, where) {
   ], ['client', 'server']);
   
   api.export(['ReactiveEaser', 'InterpolatedFunction']);
-  api.export(['animate']);
+  // XXX: clean this up
+  api.export(['animate', 'interpolate']);
 });
 
 Package.onTest(function (api) {
