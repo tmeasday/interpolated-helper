@@ -8,10 +8,17 @@ ReactiveEaser = function(easingFn, defaultTime) {
   
   this.easingFn = easingFn || d3.ease('cubic-in-out');
   this.defaultTime = defaultTime || 1000;
-  this.running = false
+  this.running = false;
+  this._direction = 'up';
 }
 
 ReactiveEaser.prototype = _.extend(new ReactiveVar, {
+  set: function(t) {
+    if (this._direction === 'down') 
+      t = 1 - t;
+    ReactiveVar.prototype.set.call(this, t);
+  },
+  
   start: function(time, cb) {
     if (_.isFunction(time)) {
       cb = time;
@@ -68,6 +75,17 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
     var go = function() {
       self.start(go);
     }
+    go();
+  },
+  
+  bounce: function() {
+    var self = this;
+    var go = function() {
+      // reverse direction
+      self._direction = (self._direction === 'up' ? 'down' : 'up');
+      self.start(go);
+    }
+    self._direction = 'down';
     go();
   }
 });
