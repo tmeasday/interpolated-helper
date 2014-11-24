@@ -72,7 +72,14 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
   loop: function() {
     var self = this;
     var go = function() {
-      self.start(go);
+      self.start(function() {
+        if (self._finish) {
+          self._finish();
+          self._finish = null;
+        } else {
+          go(); // go again
+        }
+      });
     }
     go();
   },
@@ -86,6 +93,11 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
     }
     self._direction = 'down';
     go();
+  },
+  
+  // complete the current loop/bounce(TODO) and call done
+  finish: function(done) {
+    this._finish = done;
   },
   
   // not sure if these should go on here but hey
