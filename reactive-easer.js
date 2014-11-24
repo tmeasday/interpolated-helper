@@ -60,7 +60,6 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
       if (this.rafID)
         cancelAnimationFrame(this.rafID);
       
-      this.set(1);
       this.running = false;
     }
   },
@@ -87,5 +86,20 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
     }
     self._direction = 'down';
     go();
+  },
+  
+  // not sure if these should go on here but hey
+  
+  // Use d3.interpolate to go between a, b driven by our behaviour
+  interpolate: function(a, b) {
+    return this.ease(d3.interpolate(a, b));
+  },
+  
+  // turn f into an "eased" reactive function
+  ease: function(f) {
+    var self = this;
+    return function() {
+      return f(self.get())
+    }
   }
 });
