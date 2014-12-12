@@ -20,6 +20,11 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
   },
   
   start: function(time, cb) {
+    this.set(0);
+    this.resume(time, cb);
+  },
+  
+  resume: function(time, cb) {
     if (_.isFunction(time)) {
       cb = time;
       time = false;
@@ -31,16 +36,19 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
     var self = this;
     time = time || self.defaultTime;
     
-    var startedAt;
+    var startedAt
+    var initial = Tracker.nonreactive(function() { return self.get(); });
+    var final = 1;
     var step = function(timestamp) {
       startedAt = startedAt || timestamp;
       var elapsed = timestamp - startedAt;
       
       if (elapsed < time) {
-        self.set(self.easingFn(elapsed / time));
+        var current = initial + (elapsed / time) * (final - initial);
+        self.set(self.easingFn(current));
         self.rafID = requestAnimationFrame(step);
       } else {
-        self.set(1)
+        self.set(final)
         // give listeners a chance to read the 1 value before stopping
         Deps.afterFlush(function() {
           self.stop();
@@ -72,15 +80,17 @@ ReactiveEaser.prototype = _.extend(new ReactiveVar, {
   loop: function() {
     var self = this;
     var go = function() {
-      self.start(function() {
+      self.resume(function() {
         if (self._finish) {
           self._finish();
           self._finish = null;
         } else {
+          self.set(0);
           go(); // go again
         }
       });
     }
+    
     go();
   },
   
